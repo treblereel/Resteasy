@@ -16,6 +16,7 @@ import java.security.cert.CertStore;
 import java.security.cert.CertStoreException;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -60,7 +61,6 @@ import org.jboss.resteasy.security.smime.PKCS7SignatureInput;
 import org.jboss.resteasy.spi.ResteasyDeployment;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.jboss.resteasy.test.TestPortProvider;
-import org.jboss.resteasy.util.Base64;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -280,7 +280,7 @@ public class TokenTest
       byte[] bytes = (byte[])data.getSignedContent().getContent();
       System.out.println("BYTES: " + new String(bytes));
       System.out.println("size:" + signed.length);
-      System.out.println("Base64.size: " + Base64.encodeBytes(signed).length());
+      System.out.println("Base64.size: " + Base64.getEncoder().encodeToString(signed).length());
 
       SignerInformation signer = (SignerInformation)data.getSignerInfos().getSigners().iterator().next();
       System.out.println("valid: " + signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("BC").build(cert.getPublicKey())));

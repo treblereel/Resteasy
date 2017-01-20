@@ -11,7 +11,6 @@ import org.jboss.resteasy.keystone.model.Roles;
 import org.jboss.resteasy.keystone.model.StoredUser;
 import org.jboss.resteasy.keystone.model.UrlToken;
 import org.jboss.resteasy.security.smime.SignedOutput;
-import org.jboss.resteasy.util.Base64;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
@@ -27,6 +26,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -125,7 +125,7 @@ public class TokenService
       if (user == null) throw new WebApplicationException(401);
       String password = auth.getPasswordCredentials().getPassword();
       MessageDigest digest = MessageDigest.getInstance("MD5");
-      String hashPassword = Base64.encodeBytes(digest.digest(password.getBytes(StandardCharsets.UTF_8)));
+      String hashPassword = Base64.getEncoder().encodeToString(digest.digest(password.getBytes(StandardCharsets.UTF_8)));
       String savedPassword = user.getCredentials().get("password-hash");
       if (!hashPassword.equals(savedPassword)) throw new WebApplicationException(401);
 
@@ -176,7 +176,7 @@ public class TokenService
       if (user == null) throw new WebApplicationException(401);
       String password = auth.getPasswordCredentials().getPassword();
       MessageDigest digest = MessageDigest.getInstance("MD5");
-      String hashPassword = Base64.encodeBytes(digest.digest(password.getBytes(StandardCharsets.UTF_8)));
+      String hashPassword = Base64.getEncoder().encodeToString(digest.digest(password.getBytes(StandardCharsets.UTF_8)));
       String savedPassword = user.getCredentials().get("password-hash");
       if (!hashPassword.equals(savedPassword)) throw new WebApplicationException(401);
 

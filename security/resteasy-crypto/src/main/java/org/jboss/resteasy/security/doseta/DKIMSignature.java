@@ -3,7 +3,6 @@ package org.jboss.resteasy.security.doseta;
 import org.jboss.resteasy.security.SigningAlgorithm;
 import org.jboss.resteasy.security.doseta.i18n.Messages;
 import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
-import org.jboss.resteasy.util.Base64;
 import org.jboss.resteasy.util.ParameterParser;
 
 import javax.ws.rs.core.MultivaluedMap;
@@ -16,6 +15,7 @@ import java.security.Signature;
 import java.security.SignatureException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -94,9 +94,9 @@ public class DKIMSignature
       String sig = attributes.get(SIGNATURE);
       try
       {
-         if (sig != null) signature = Base64.decode(sig);
+         if (sig != null) signature = Base64.getDecoder().decode(sig);
       }
-      catch (IOException e)
+      catch (IllegalArgumentException e)
       {
          throw new RuntimeException(e);
       }
@@ -407,7 +407,7 @@ public class DKIMSignature
 
       byte[] signed = signature.sign();
       setSignature(signed);
-      String base64Signature = Base64.encodeBytes(signed);
+      String base64Signature = Base64.getEncoder().encodeToString(signed);
       dosetaHeader += base64Signature;
 //      System.out.println("***: " + dosetaHeader);
       this.headerValue = dosetaHeader;
@@ -418,7 +418,7 @@ public class DKIMSignature
    {
       byte[] bodyHash = hash(body, hashAlgorithm);
 
-      return Base64.encodeBytes(bodyHash);
+      return Base64.getEncoder().encodeToString(bodyHash);
    }
 
    private byte[] hash(byte[] body, String hashAlgorithm) throws SignatureException
@@ -537,9 +537,9 @@ public class DKIMSignature
          byte[] enclosedBh = null;
          try
          {
-            enclosedBh = Base64.decode(encodedBh);
+            enclosedBh = Base64.getDecoder().decode(encodedBh);
          }
-         catch (IOException e)
+         catch (IllegalArgumentException e)
          {
             throw new SignatureException(Messages.MESSAGES.failedToParseBodyHash(), e);
          }

@@ -1,7 +1,7 @@
 package org.jboss.resteasy.util;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 
 /**
@@ -14,7 +14,7 @@ public class BasicAuthHelper
    {
       StringBuffer buf = new StringBuffer(username);
       buf.append(':').append(password);
-      return "Basic " + Base64.encodeBytes(buf.toString().getBytes(StandardCharsets.UTF_8));
+      return "Basic " + Base64.getEncoder().encodeToString(buf.toString().getBytes(StandardCharsets.UTF_8));
    }
 
    public static String[] parseHeader(String header)

@@ -20,7 +20,6 @@ import org.jboss.resteasy.skeleton.key.representations.SkeletonKeyScope;
 import org.jboss.resteasy.skeleton.key.representations.SkeletonKeyToken;
 import org.jboss.resteasy.skeleton.key.representations.idm.RequiredCredentialRepresentation;
 import org.jboss.resteasy.spi.NotImplementedYetException;
-import org.jboss.resteasy.util.Base64;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.ForbiddenException;
@@ -43,11 +42,11 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.Providers;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -741,7 +740,7 @@ public class TokenManagement
          throw new RuntimeException(e);
       }
       byte[] bytes = digest.digest(value.getBytes());
-      return Base64.encodeBytes(bytes);
+      return Base64.getEncoder().encodeToString(bytes);
    }
 
 }

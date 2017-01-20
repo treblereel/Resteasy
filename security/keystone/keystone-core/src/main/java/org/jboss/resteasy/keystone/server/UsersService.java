@@ -3,7 +3,6 @@ package org.jboss.resteasy.keystone.server;
 import org.infinispan.Cache;
 import org.jboss.resteasy.keystone.model.StoredUser;
 import org.jboss.resteasy.keystone.model.User;
-import org.jboss.resteasy.util.Base64;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
@@ -21,6 +20,7 @@ import javax.ws.rs.core.UriInfo;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.util.Base64;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -45,7 +45,7 @@ public class UsersService
    {
       String password = user.getCredentials().remove("password");
       MessageDigest digest = MessageDigest.getInstance("MD5");
-      String hashPassword = Base64.encodeBytes(digest.digest(password.getBytes(StandardCharsets.UTF_8)));
+      String hashPassword = Base64.getEncoder().encodeToString(digest.digest(password.getBytes(StandardCharsets.UTF_8)));
       user.getCredentials().clear();
       user.getCredentials().put("password-hash", hashPassword);
       if (user.getId() == null)
@@ -87,7 +87,7 @@ public class UsersService
       {
          String password = user.getCredentials().remove("password");
          MessageDigest digest = MessageDigest.getInstance("MD5");
-         String hashPassword = Base64.encodeBytes(digest.digest(password.getBytes(StandardCharsets.UTF_8)));
+         String hashPassword = Base64.getEncoder().encodeToString(digest.digest(password.getBytes(StandardCharsets.UTF_8)));
          stored.getCredentials().put("password", hashPassword);
       }
       cache.put("/users/" + id, stored, -1, TimeUnit.MILLISECONDS);

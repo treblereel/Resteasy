@@ -1,7 +1,5 @@
 package org.jboss.resteasy.skeleton.key;
 
-import org.jboss.resteasy.util.Base64;
-
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -10,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
+import java.util.Base64;
 
 /**
  * Utility classes to extract PublicKey, PrivateKey, and X509Certificate from openssl generated PEM files
@@ -94,7 +93,7 @@ public class PemUtils
    public static byte[] pemToDer(String pem) throws IOException
    {
       pem = removeBeginEnd(pem);
-      return Base64.decode(pem);
+      return Base64.getDecoder().decode(pem);
    }
 
    public static String removeBeginEnd(String pem)

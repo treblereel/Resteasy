@@ -1,9 +1,8 @@
 package org.jboss.resteasy.jose;
 
+import java.util.Base64;
 
 import org.jboss.resteasy.jose.i18n.Messages;
-import org.jboss.resteasy.util.Base64;
-
 /**
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
  * @version $Revision: 1 $
@@ -12,7 +11,7 @@ public class Base64Url
 {
    public static String encode(byte[] bytes)
    {
-      String s = Base64.encodeBytes(bytes);
+      String s = Base64.getEncoder().encodeToString(bytes);
       s = s.split("=")[0]; // Remove any trailing '='s
       s = s.replace('+', '-'); // 62nd char of encoding
       s = s.replace('/', '_'); // 63rd char of encoding
@@ -32,7 +31,7 @@ public class Base64Url
       }
       try
       {
-         return Base64.decode(s);
+         return Base64.getDecoder().decode(s);
       }
       catch (Exception e)
       {

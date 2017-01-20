@@ -1,6 +1,6 @@
 package org.jboss.resteasy.security;
 
-import org.jboss.resteasy.util.Base64;
+import java.util.Base64;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
@@ -94,7 +94,7 @@ public class PemUtils
    public static byte[] pemToDer(String pem) throws java.io.IOException
    {
       pem = removeBeginEnd(pem);
-      return Base64.decode(pem);
+      return Base64.getDecoder().decode(pem);
    }
 
    public static String removeBeginEnd(String pem)

@@ -3,7 +3,6 @@ package org.jboss.resteasy.security.doseta;
 import org.jboss.resteasy.security.doseta.i18n.LogMessages;
 import org.jboss.resteasy.security.doseta.i18n.Messages;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
-import org.jboss.resteasy.util.Base64;
 import org.jboss.resteasy.util.ParameterParser;
 
 import javax.naming.directory.Attributes;
@@ -17,6 +16,7 @@ import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -313,7 +313,7 @@ public class DosetaKeyRepository implements KeyRepository
             throw new RuntimeException(Messages.MESSAGES.noPEntry());
          }
          if (LogMessages.LOGGER.isDebugEnabled()) LogMessages.LOGGER.debug(Messages.MESSAGES.pem(pem));
-         byte[] der = Base64.decode(pem);
+         byte[] der = Base64.getDecoder().decode(pem);
 
 
          X509EncodedKeySpec spec =
